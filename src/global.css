@@ -1,0 +1,11 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: fit-content;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  min-width: 100vw;  /* Минимальная ширина для корня React */
+}
