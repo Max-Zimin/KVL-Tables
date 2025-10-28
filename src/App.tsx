@@ -81,6 +81,7 @@ function App() {
     setLeague(leagueKey && leagues ? leagues[leagueKey] : null);
   }, [leagues, currentLeague]);
 
+  
   return (
     <>
       {isAuthOpen && (
