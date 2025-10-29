@@ -3,6 +3,7 @@
 import { css } from "@emotion/react";
 import Account from "./Account";
 import { Skeleton, Tooltip } from "@mui/material";
+import type { IHeaderProps } from "../../types";
 
 const HeadCSS = css`
   width: 100%;
@@ -44,13 +45,14 @@ const CSSskeleton = css`
   top: 10px;
   background-color: #4d4d4d;
 `;
-export function Header({ account }: { account: string | null }) {
+
+export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
   return (
     <div css={HeadCSS}>
-      <img css={CSSlogo} src="public/KVL_logo.png" alt="" />
-      <img css={CSScover} alt="" src="public/KVLoblozhka.png"></img>
+      <img css={CSSlogo} src="KVL_logo.png" alt="" />
+      <img css={CSScover} alt="" src="KVLoblozhka.png"></img>
       {account ? (
-        <Account name={account}></Account>
+        <Account name={account} setIsOpen={setIsOpen} setAccount={setAccount}></Account>
       ) : (
         <Skeleton variant="circular" width={40} height={40} css={CSSskeleton} />
       )}
@@ -71,7 +73,7 @@ export function Header({ account }: { account: string | null }) {
         }}
       >
         <a css={CSSvk} href="https://vk.com/klvl40" target="_blank" rel="noopener noreferrer">
-          <img css={CSSimg} src="public/VKicon.png" alt="VK" />
+          <img css={CSSimg} src="VKicon.png" alt="VK" />
         </a>
       </Tooltip>
     </div>

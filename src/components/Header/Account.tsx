@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
-import type { IAvatarProps } from "../../types";
+import { useState } from "react";
+import type { IAccountProps } from "../../types";
+import Button from "@mui/material/Button";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { logout } from "../../Api/apiFirebase";
 
 const Avatar = styled.div<{ isHovered: boolean }>`
   position: absolute;
@@ -10,14 +13,14 @@ const Avatar = styled.div<{ isHovered: boolean }>`
   top: 10px;
   width: ${(props) => (props.isHovered ? "200px" : "40px")};
   height: 40px;
-  border-radius: ${(props) => (props.isHovered ? "20px" : "50%")}; 
+  border-radius: ${(props) => (props.isHovered ? "20px" : "50%")};
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const Letter = styled.span<{ isHovered: boolean }>`
@@ -38,7 +41,7 @@ const FullName = styled.span<{ isHovered: boolean }>`
   transition: opacity 0.2s ease; /* Плавное появление */
 `;
 
-const Account: React.FC<IAvatarProps> = ({ name }) => {
+const Account = ({ name, setIsOpen, setAccount }: IAccountProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   if (!name) return null;
 
@@ -47,7 +50,14 @@ const Account: React.FC<IAvatarProps> = ({ name }) => {
   return (
     <Avatar isHovered={isHovered} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <Letter isHovered={isHovered}>{firstLetter}</Letter>
-      <FullName isHovered={isHovered}>{name}</FullName>
+      <FullName isHovered={isHovered}>
+        {name}
+        <Button
+          onClick={() => logout(setIsOpen, setAccount)}
+          style={{ paddingRight: "0px" }}
+          endIcon={<LogoutIcon />}
+        />
+      </FullName>
     </Avatar>
   );
 };

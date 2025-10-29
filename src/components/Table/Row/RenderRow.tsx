@@ -116,7 +116,7 @@ export default function RenderRow({
               colors={league.colors}
               length={league.colsNames.length + 6}
             >
-              <img src="public/KVL_logo.png" alt="" />
+              <img src="/KVL_logo.png" alt="" />
             </Cell>
           );
         }

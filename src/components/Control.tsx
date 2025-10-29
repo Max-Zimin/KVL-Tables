@@ -57,7 +57,6 @@ export default function Control({ leagues, account }: { leagues: TLeagues | null
       return result;
     };
     const makeRecordInJournal = (account: string | null) => {
-      console.log("🚀 ~ makeRecordInJournal ~ account:", account);
       if (!account) return;
       function getTodayDateString(): string {
         const today = new Date();
@@ -86,7 +85,6 @@ export default function Control({ leagues, account }: { leagues: TLeagues | null
 
     const apiData: TApiPost = makeApiSendObject(leagues);
     apiData.journal = makeRecordInJournal(account);
-    console.log(apiData);
     try {
       const res = await api.saveData(apiData);
       console.log(res);

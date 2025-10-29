@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // import { doc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
@@ -20,8 +20,10 @@ export const db = getFirestore(app); // для работы с базой
 export const getUserName = async (): Promise<string | null> => {
   return new Promise((resolve) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      unsubscribe(); // Останавливаем слушатель после первого вызова
+      unsubscribe();
+
       if (currentUser) {
+        console.log("🚀 ~ getUserName ~ currentUser:", currentUser);
         try {
           const userDocRef = doc(db, "users", currentUser.uid);
           const userDoc = await getDoc(userDocRef);
@@ -36,10 +38,64 @@ export const getUserName = async (): Promise<string | null> => {
           resolve(null);
         }
       } else {
-        resolve(null); // Пользователь не авторизован
+        resolve(null);
       }
     });
   });
+};
+function getDateTimeFromTimestamp(timestamp: number) {
+  const date = new Date(timestamp); // Создаём объект Date
+  // Форматируем в локальное время с секундами (например, "05.10.2023, 14:30:45")
+  return date.toLocaleString("ru-RU", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
+export const autoLogin = async (
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setAccount: React.Dispatch<React.SetStateAction<string | null>>
+) => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    unsubscribe();
+
+    if (currentUser) {
+      const now = new Date().getTime();
+      console.log("🚀 ~ autoLogin ~ now:", getDateTimeFromTimestamp(now));
+      let lastAuth: number;
+      const localTimestamp = localStorage.getItem("lastAuth");
+
+      if (localTimestamp) {
+        console.log("🚀 ~ autoLogin ~ localTimestamp:", getDateTimeFromTimestamp(+localTimestamp));
+        lastAuth = +localTimestamp;
+
+        console.log(lastAuth);
+        if (now - lastAuth < 2 * 60 * 60 * 1000) {
+          setIsOpen(false);
+          setAccount(await getUserName());
+        } else logout(setIsOpen, setAccount);
+      } else return false;
+
+      return true;
+    } else return false;
+  });
+};
+
+export const logout = async (
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setAccount: React.Dispatch<React.SetStateAction<string | null>>
+) => {
+  try {
+    await signOut(auth);
+    setIsOpen(true);
+    setAccount(null);
+  } catch (error) {
+    console.error("Ошибка логаута:", error);
+    alert("Ошибка выхода");
+  }
 };
 
 export const handleLogin = async (
@@ -51,7 +107,8 @@ export const handleLogin = async (
   try {
     await signInWithEmailAndPassword(auth, login, password);
     setIsOpen(false);
-    setAccount( await getUserName());
+    setAccount(await getUserName());
+    localStorage.setItem("lastAuth", `${new Date().getTime()}`);
     console.log("Вход успешен!");
   } catch (error) {
     console.error("Ошибка:", error);

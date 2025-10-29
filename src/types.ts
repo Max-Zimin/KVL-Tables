@@ -1,5 +1,12 @@
-export interface IAvatarProps {
-  name: string | null; // Полная строка, например, "John Doe"
+export interface IHeaderProps {
+  account: string | null;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccount: React.Dispatch<React.SetStateAction<string | null>>;
+}
+export interface IAccountProps {
+  name: string | null;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setAccount: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export type SidebarType = {
@@ -111,7 +118,7 @@ interface TApiChildObject extends Omit<ILeague, "rowsNames" | "colsNames" | "pla
   data: string[][];
 }
 export type TApiGetData = Record<string, TApiChildObject>;
-export type TJournalRecord= {
+export type TJournalRecord = {
   name: string;
   date: string;
   time: string;

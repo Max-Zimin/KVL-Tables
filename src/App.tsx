@@ -4,7 +4,7 @@ import Control from "./components/Control";
 import TableContainer from "./components/Table/TableContainer";
 import Sidebar from "./components/Sidebar";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getDataFromApi, getJournalFromApi } from "./Api/getDataFromApi";
 import { css } from "@emotion/react";
 import { ScreenshotProvider } from "./components/ScreenshotProvider";
@@ -13,7 +13,7 @@ import type { ILeague, TApiGetJournal, TLeagues } from "./types";
 import { Header } from "./components/Header/Header";
 import { League } from "./data/LeagueContext";
 import AuthModal from "./components/Auth/Auth";
-import { handleLogin } from "./Api/apiFirebase";
+import { autoLogin, handleLogin } from "./Api/apiFirebase";
 
 import { Skeleton } from "@mui/material";
 import Journal from "./components/Journal";
@@ -61,27 +61,44 @@ const Back = styled.div`
 `;
 
 function App() {
+  const leaguesRef = useRef<TLeagues | null>(null);
+  const [leaguesLoaded, setLeaguesLoaded] = useState<boolean>(false);
   const [isAuthOpen, setIsAuthOpen] = useState(true);
   const [account, setAccount] = useState<string | null>(null);
-  const [leagues, setLeagues] = useState<TLeagues | null>(null);
   const [league, setLeague] = useState<ILeague | null>(null);
   const [currentLeague, setCurrentLeague] = useState<string>("Высшая М");
   const [journal, setJournal] = useState<TApiGetJournal | null>(null);
 
   useEffect(() => {
-    getDataFromApi().then((data) => {
-      setLeagues(data);
-    });
+    autoLogin(setIsAuthOpen, setAccount);
+    const storedLeagues = sessionStorage.getItem("leagues");
+    if (storedLeagues) {
+      leaguesRef.current = JSON.parse(storedLeagues) as TLeagues;
+      setLeaguesLoaded(true);
+    } else {
+      getDataFromApi().then((data) => {
+        leaguesRef.current = data;
+        setLeaguesLoaded(true);
+      });
+    }
     getJournalFromApi().then((journal) => {
       setJournal(journal);
     });
   }, []);
   useEffect(() => {
-    const leagueKey = leagues ? Object.keys(leagues).find((key) => leagues[key].label === currentLeague) : null;
-    setLeague(leagueKey && leagues ? leagues[leagueKey] : null);
-  }, [leagues, currentLeague]);
+    const leagues = leaguesRef.current;
+    if (leagues) {
+      const leagueKey = Object.keys(leagues).find((key) => leagues[key].label === currentLeague);
+      setLeague(leagueKey ? leagues[leagueKey] : null);
+    }
+  }, [leaguesLoaded, currentLeague]);
 
-  
+  useEffect(() => {
+    if (leaguesRef.current) {
+      sessionStorage.setItem("leagues", JSON.stringify(leaguesRef.current));
+    }
+  }, [league]);
+
   return (
     <>
       {isAuthOpen && (
@@ -91,15 +108,15 @@ function App() {
       )}
       <ScreenshotProvider>
         <div css={AppWrapperCSS}>
-          <Header account={account} />
+          <Header account={account} setIsOpen={setIsAuthOpen} setAccount={setAccount} />
           <div css={ContainerCSS}>
-            <Sidebar currentLeague={currentLeague} setCurrentLeague={setCurrentLeague} leagues={leagues} />
+            <Sidebar currentLeague={currentLeague} setCurrentLeague={setCurrentLeague} leagues={leaguesRef.current} />
             <Back>
-              {!leagues ? (
+              {!leaguesRef.current ? (
                 <Skeleton variant="rectangular" width={960} height={540} sx={{ backgroundColor: "#4d4d4d" }} />
               ) : (
                 <>
-                  {league ? (
+                  {league && leaguesRef ? (
                     <League.Provider value={{ league, setLeague }}>
                       <TableContainer league={league} />
                     </League.Provider>
@@ -108,7 +125,7 @@ function App() {
               )}
               <div css={ControlsWrapper}>
                 <Journal journal={journal}></Journal>
-                <Control leagues={leagues} account={account} />
+                <Control leagues={leaguesRef.current} account={account} />
               </div>
             </Back>
           </div>

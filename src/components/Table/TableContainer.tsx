@@ -55,12 +55,11 @@ export default function TableContainer({ league }: ITableProps) {
             <CellHeader colors={league.colors}>Название команды</CellHeader>
             {countGame.map((num: number) => (
               <CellHeader colors={league.colors} key={"headColsNumber" + num}>
-                {" "}
                 {num}
               </CellHeader>
             ))}
             <CellHeader colors={league.colors} extraColor={true}>
-              П/п
+             П/п
             </CellHeader>
             <CellHeader colors={league.colors}>Очки</CellHeader>
             <CellHeader colors={league.colors}>Партии</CellHeader>
