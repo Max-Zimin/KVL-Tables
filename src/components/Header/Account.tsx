@@ -46,13 +46,18 @@ const Account = ({ name, setIsOpen, setAccount }: IAccountProps) => {
   if (!name) return null;
 
   const firstLetter = name.charAt(0).toUpperCase();
+  const hasTouch = "ontouchstart" in window;
 
   return (
-    <Avatar isHovered={isHovered} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-      <Letter isHovered={isHovered} onClick={() => setIsHovered(true)}>
+    <Avatar
+      isHovered={isHovered}
+      onMouseEnter={!hasTouch ? () => setIsHovered(true) : undefined}
+      onMouseLeave={!hasTouch ? () => setIsHovered(false) : undefined}
+    >
+      <Letter isHovered={isHovered} onClick={hasTouch ? () => setIsHovered(!isHovered) : undefined}>
         {firstLetter}
       </Letter>
-      <FullName isHovered={isHovered} onClick={() => setIsHovered(false)}>
+      <FullName isHovered={isHovered} onClick={hasTouch ? () => setIsHovered(!isHovered) : undefined}>
         {name}
         <Button
           onClick={() => logout(setIsOpen, setAccount)}
