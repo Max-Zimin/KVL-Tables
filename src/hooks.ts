@@ -1,7 +1,7 @@
 import { useContext, useRef } from "react";
 import ScreenshotContext from "./components/ScreenshotProvider";
 import { useCallback, useEffect } from "react";
-import type { IUseLongPressOptions } from "./types/hooks";
+import type { IUseLongPressOptions } from "./types/hooksTypes";
 import type { TypeColsNames } from "./types/types";
 
 export const useScreenshot = () => {

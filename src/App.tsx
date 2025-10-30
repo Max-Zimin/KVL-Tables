@@ -103,6 +103,7 @@ function App() {
   }, [league]);
 
   useEffect(() => {
+    if(!journal)
     getJournalFromApi().then((journal) => {
       setJournal(journal);
     });
