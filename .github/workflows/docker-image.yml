@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/kvl:front-latest
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/kvl:front
 
 jobs:
   build-and-push:
