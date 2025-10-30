@@ -83,7 +83,6 @@ export default function TableContainer({ league }: ITableProps) {
           ))}
         </Table>
       </Background>
-      <div style={{height: '300px', width: '300px', backgroundColor: 'red'}}></div>
       <div style={{ display: "flex", width: "100%" }}>
         <Tooltip
           title={
