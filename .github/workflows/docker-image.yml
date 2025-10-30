@@ -49,4 +49,11 @@ jobs:
           cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ env.IMAGE_NAME }}:buildcache,mode=max
 
+      - name: Run remote script over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_NAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: ${{ secrets.SSH_SCRIPT }}
 
