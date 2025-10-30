@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-
-import type { SidebarType } from "../types";
 import { Skeleton } from "@mui/material";
+import type { ISidebarProps } from "../types/props";
 
 const container = css`
   height: 100vh;
@@ -42,7 +41,7 @@ const leagueNameRadio = css`
   display: none;
 `;
 
-export default function Sidebar({ currentLeague, setCurrentLeague, leagues }: SidebarType) {
+export default function Sidebar({ currentLeague, setCurrentLeague, leagues }: ISidebarProps) {
   return (
     <>
       <div css={container}>

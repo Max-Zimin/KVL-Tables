@@ -7,9 +7,10 @@ import { colorScore } from "../../../data/stylesFunctions";
 import { useContext, useRef } from "react";
 import { League } from "../../../data/LeagueContext";
 
-import type { TColsNames, TRow } from "../../../types";
 import { winLos, points, gameRatio } from "./CalcFunctions";
-import { useLongPress } from "./TouchFunctions";
+import type { IRowProps } from "../../../types/props";
+import type { TypeColsNames } from "../../../types/types";
+import { useLongPress } from "../../../hooks";
 
 export default function RenderRow({
   row,
@@ -20,12 +21,17 @@ export default function RenderRow({
   setScore,
   place,
   setPlace,
-}: TRow) {
+}: IRowProps) {
   const { league, setLeague } = useContext(League);
   const clickTimeoutScore = useRef<NodeJS.Timeout | number | null>(null);
   const clickTimeoutPlace = useRef<NodeJS.Timeout | number | null>(null);
 
-  const handleLongPress = (rowIndex: number, gameIndex: number, gameName: TColsNames, e: React.TouchEvent<Element>) => {
+  const handleLongPress = (
+    rowIndex: number,
+    gameIndex: number,
+    gameName: TypeColsNames,
+    e: React.TouchEvent<Element>
+  ) => {
     if (navigator.vibrate) navigator.vibrate(100); // Вибрация 100 мс
     handleClickScore(rowIndex, gameIndex, gameName, e);
   };
@@ -35,12 +41,17 @@ export default function RenderRow({
     isMobileOnly: true,
   });
 
-  const handleClickScore = (rowIndex: number, gameIndex: number, gameName: TColsNames, e: React.MouseEvent | React.TouchEvent<Element>) => {
+  const handleClickScore = (
+    rowIndex: number,
+    gameIndex: number,
+    gameName: TypeColsNames,
+    e: React.MouseEvent | React.TouchEvent<Element>
+  ) => {
     const setResult = (rowIndex: number, gameIndex: number) => {
       setScore({ row: rowIndex, col: gameIndex });
       setPlace({ row: null });
     };
-    const clearResult = (rowIndex: number, gameIndex: number, gameName: TColsNames) => {
+    const clearResult = (rowIndex: number, gameIndex: number, gameName: TypeColsNames) => {
       league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = "";
       league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] = "";
       setLeague({ ...league });
@@ -103,7 +114,7 @@ export default function RenderRow({
       >
         {row.teamName}
       </Cell>
-      {league.colsNames.map((gameName: TColsNames, gameIndex: number) => {
+      {league.colsNames.map((gameName: TypeColsNames, gameIndex: number) => {
         if (row.count === gameIndex + 1) {
           // игры сам с собой
           return (

@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 
-
 import { css } from "@emotion/react";
 import { useScreenshot } from "../../../hooks";
-import type { TBackgroundProps } from "../../../types";
+import type { IBackgroundProps } from "../../../types/props";
 
 
 const src: Record<string, string> = {
@@ -44,7 +43,7 @@ export const BackgroundCSS = styled.div`
   width: 960px;
   height: 540px;
 `;
-export default function Background({ league, children, onClick, setHoveredCell }: TBackgroundProps) {
+export default function Background({ league, children, onClick, setHoveredCell }: IBackgroundProps) {
   const { areaRef } = useScreenshot();
   return (
     <BackgroundCSS onClick={onClick} ref={areaRef} onMouseEnter={() => setHoveredCell(null)}>

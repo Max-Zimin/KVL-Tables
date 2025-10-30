@@ -3,7 +3,7 @@
 import { css } from "@emotion/react";
 import Account from "./Account";
 import { Skeleton, Tooltip } from "@mui/material";
-import type { IHeaderProps } from "../../types";
+import type { IHeaderProps } from "../../types/props";
 
 const HeadCSS = css`
   width: 100%;

@@ -3,33 +3,33 @@ import { League } from "../data/classLeague";
 import { major, sunrise } from "../data/levels";
 import { placesArray } from "../data/places";
 import { colsNamesArray, rowsNamesArray } from "../data/rowsAndColsNames";
+import type { TypeApiGetData, TypeApiGetJournal, TypeLeagues, TypeLevel, TypePlaces, TypeScoreVariants, TypeTableData } from "../types/types";
 
-import type { ILevel, TApiGetData, TApiGetJournal, TData, TLeagues, TPlaces, TScoreVariants } from "../types";
 
-export const getDataFromApi = async (): Promise<TLeagues> => {
-  const makeDataFromArray = (value: string[][]): TData[] => {
+export const getDataFromApi = async (): Promise<TypeLeagues> => {
+  const makeDataFromArray = (value: string[][]): TypeTableData[] => {
     return value.map((data) => {
       const count = Number(data[0]);
       const teamName = data[1];
       const place = data[data.length - 1];
       const games = data.slice(2, -1);
-      const result: Partial<TData> = {
+      const result: Partial<TypeTableData> = {
         count: count,
         teamName: teamName,
       };
       games.forEach((game, index) => {
         const key = colsNamesArray[index];
-        if (key) result[key] = game as TScoreVariants;
+        if (key) result[key] = game as TypeScoreVariants;
       });
-      result.place = place as TPlaces;
+      result.place = place as TypePlaces;
 
-      return result as TData;
+      return result as TypeTableData;
     });
   };
-  const dataApi: TApiGetData | TApiGetJournal = await api.getData("data");
+  const dataApi: TypeApiGetData | TypeApiGetJournal = await api.getData("data");
   return Object.fromEntries(
     Object.entries(dataApi).map(([key, value]) => {
-      const level: ILevel = value.level === "major" ? major : value.level === "sunrise" ? sunrise : major; // если оба ложны запишитеся как высшая лига
+      const level: TypeLevel = value.level === "major" ? major : value.level === "sunrise" ? sunrise : major; // если оба ложны запишитеся как высшая лига
       const data = makeDataFromArray(value.data);
       return [
         key,
@@ -52,7 +52,7 @@ export const getDataFromApi = async (): Promise<TLeagues> => {
   );
 };
 
-export const getJournalFromApi = async (): Promise<TApiGetJournal> => {
-  const dataApi: TApiGetData | TApiGetJournal = await api.getData("journal");
-  return dataApi as TApiGetJournal;
+export const getJournalFromApi = async (): Promise<TypeApiGetJournal> => {
+  const dataApi: TypeApiGetData | TypeApiGetJournal = await api.getData("journal");
+  return dataApi as TypeApiGetJournal;
 };

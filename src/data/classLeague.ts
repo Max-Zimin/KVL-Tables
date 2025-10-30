@@ -1,19 +1,19 @@
-import type { ILeague, ILevel, TColsNames, TData, TPlaces, TRowsNames } from "../types";
+import type { TypeRowsNames, TypeColsNames, TypeTableData, TypeLevel, TypePlaces, TypeLeague } from "../types/types";
 
 export class League {
   leagueName: string;
   label: string;
   teamsCount: number;
-  rowsNames: TRowsNames[];
-  colsNames: TColsNames[];
+  rowsNames: TypeRowsNames[];
+  colsNames: TypeColsNames[];
   colors: {
     main: string;
     extra: string;
   };
-  data: TData[];
-  level: ILevel;
-  places: TPlaces[];
-  constructor({ leagueName, label, teamsCount, rowsNames, colsNames,colors, data, level, places }: ILeague) {
+  data: TypeTableData[];
+  level: TypeLevel;
+  places: TypePlaces[];
+  constructor({ leagueName, label, teamsCount, rowsNames, colsNames,colors, data, level, places }: TypeLeague) {
     this.leagueName = leagueName;
     this.label = label;
     this.teamsCount = teamsCount;

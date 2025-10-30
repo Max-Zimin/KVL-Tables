@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import type { CellProps } from "../../../types";
 import { calcLogoSize } from "../../../data/stylesFunctions";
+import type { ICellProps } from "../../../types/props";
 
-export const Cell = styled.div<CellProps>`
+export const Cell = styled.div<ICellProps>`
   border: 1px solid #000;
   height: 100%;
   display: flex;

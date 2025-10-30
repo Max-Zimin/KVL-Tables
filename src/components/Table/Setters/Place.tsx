@@ -2,15 +2,16 @@ import { useContext } from "react";
 import { colorScore } from "../../../data/stylesFunctions";
 import { League } from "../../../data/LeagueContext";
 import { ContainerChoose, ElementChoose } from "./Choose";
-
-import type { TPropsPlace, TPlaces } from "../../../types";
-
-
+import type { IPlaceProps } from "../../../types/props";
+import type { TypePlaces } from "../../../types/types";
 
 
-export default function Place({ rowIndex, setPlace }: TPropsPlace) {
+
+
+
+export default function Place({ rowIndex, setPlace }: IPlaceProps) {
   const {league} = useContext(League);
-  const addPlace = (text: TPlaces, e: React.MouseEvent) => {
+  const addPlace = (text: TypePlaces, e: React.MouseEvent) => {
     if (text) {
       league.data.filter((team) => team.count === rowIndex + 1)[0].place = text;
       setPlace({ row: null });

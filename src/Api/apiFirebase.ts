@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-// import { doc, setDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
+import type { TypeSetAccount, TypeSetIsOpen } from "../types/states";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBYecI5v1ygXAftux9G3sPSrMFqit4S49U",
@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app); // для работы с базой
+export const db = getFirestore(app);
 
 export const getUserName = async (): Promise<string | null> => {
   return new Promise((resolve) => {
@@ -23,7 +23,6 @@ export const getUserName = async (): Promise<string | null> => {
       unsubscribe();
 
       if (currentUser) {
-        console.log("🚀 ~ getUserName ~ currentUser:", currentUser);
         try {
           const userDocRef = doc(db, "users", currentUser.uid);
           const userDoc = await getDoc(userDocRef);
@@ -43,36 +42,21 @@ export const getUserName = async (): Promise<string | null> => {
     });
   });
 };
-function getDateTimeFromTimestamp(timestamp: number) {
-  const date = new Date(timestamp); // Создаём объект Date
-  // Форматируем в локальное время с секундами (например, "05.10.2023, 14:30:45")
-  return date.toLocaleString("ru-RU", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-}
+
 export const autoLogin = async (
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setAccount: React.Dispatch<React.SetStateAction<string | null>>
+  setIsOpen: TypeSetIsOpen,
+  setAccount: TypeSetAccount
 ) => {
   const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
     unsubscribe();
 
     if (currentUser) {
       const now = new Date().getTime();
-      console.log("🚀 ~ autoLogin ~ now:", getDateTimeFromTimestamp(now));
       let lastAuth: number;
       const localTimestamp = localStorage.getItem("lastAuth");
 
       if (localTimestamp) {
-        console.log("🚀 ~ autoLogin ~ localTimestamp:", getDateTimeFromTimestamp(+localTimestamp));
         lastAuth = +localTimestamp;
-
-        console.log(lastAuth);
         if (now - lastAuth < 2 * 60 * 60 * 1000) {
           setIsOpen(false);
           setAccount(await getUserName());
@@ -85,8 +69,8 @@ export const autoLogin = async (
 };
 
 export const logout = async (
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setAccount: React.Dispatch<React.SetStateAction<string | null>>
+  setIsOpen: TypeSetIsOpen,
+  setAccount: TypeSetAccount
 ) => {
   try {
     await signOut(auth);
@@ -101,8 +85,8 @@ export const logout = async (
 export const handleLogin = async (
   login: string,
   password: string,
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setAccount: React.Dispatch<React.SetStateAction<string | null>>
+  setIsOpen: TypeSetIsOpen,
+  setAccount: TypeSetAccount
 ) => {
   try {
     await signInWithEmailAndPassword(auth, login, password);

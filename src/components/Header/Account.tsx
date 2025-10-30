@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import type { IAccountProps } from "../../types";
 import Button from "@mui/material/Button";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logout } from "../../Api/apiFirebase";
+import type { IAccountProps } from "../../types/props";
 
 const Avatar = styled.div<{ isHovered: boolean }>`
   position: absolute;

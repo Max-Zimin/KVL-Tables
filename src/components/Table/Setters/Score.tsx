@@ -2,16 +2,15 @@ import { useContext } from "react";
 import { colorScore } from "../../../data/stylesFunctions";
 import { League } from "../../../data/LeagueContext";
 import { ContainerChoose, ElementChoose } from "./Choose";
+import type { IScoreProps } from "../../../types/props";
+import type { TypeScoreVariants } from "../../../types/types";
 
-import type { TPropsScore, TScoreVariants } from "../../../types";
-
-
-export default function Score({ rowIndex, colIndex, gameName, setScore }: TPropsScore) {
+export default function Score({ rowIndex, colIndex, gameName, setScore }: IScoreProps) {
   const {league, setLeague} = useContext(League);
-  const invertResult = (text: TScoreVariants) => {
-    return `${text[2]}:${text[0]}` as TScoreVariants;
+  const invertResult = (text: TypeScoreVariants) => {
+    return `${text[2]}:${text[0]}` as TypeScoreVariants;
   };
-  const addResult = (text: TScoreVariants, event: React.MouseEvent) => {
+  const addResult = (text: TypeScoreVariants, event: React.MouseEvent) => {
     league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = text;
 
     league.data.filter((team) => team.count === colIndex + 1)[0][league.colsNames[rowIndex]] = invertResult(text);

@@ -12,42 +12,48 @@ import { useScreenshot } from "../hooks";
 import { useState } from "react";
 import { api } from "../Api/api";
 
-import type { TApiPost, TLeagues } from "../types";
+import type {TypeApiPost, TypeLeagues } from "../types/types";
 import { Skeleton, Tooltip } from "@mui/material";
 import { savePrintScreen } from "../savePrintScreen";
+import type { IControlProps } from "../types/props";
+import type { TypeSetJournal } from "../types/states";
 
 const Controls = styled.div``;
 
-export default function Control({ leagues, account }: { leagues: TLeagues | null; account: string | null }) {
-  const [loadingSave, setLoadingSave] = useState(false);
-  const [loadingPrintScreen, setLoadingPrintScreen] = useState(false);
-  const [loadingSavePrintScreen, setLoadingSavePrintScreen] = useState(false);
+export default function Control({ leagues, account, setJournal }: IControlProps) {
+  const [loadingButtonSave, setLoadingButtonSave] = useState(false);
+  const [loadingButtonPrintScreen, setLoadingButtonPrintScreen] = useState(false);
+  const [loadingSavePrintScreen, setLoadingButtonSavePrintScreen] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const { areaRef } = useScreenshot();
 
   const closeMolal = () => {
     setMessage(null);
-    setLoadingSave(false);
-    setLoadingPrintScreen(false);
-    setLoadingSavePrintScreen(false);
+    setLoadingButtonSave(false);
+    setLoadingButtonPrintScreen(false);
+    setLoadingButtonSavePrintScreen(false);
   };
   const handleSavePrintScreen = async () => {
     if (areaRef.current) {
-      setLoadingSavePrintScreen(true);
+      setLoadingButtonSavePrintScreen(true);
       const result = await savePrintScreen(areaRef.current);
       setMessage(result);
     }
   };
   const handlePrintScreen = async () => {
     if (areaRef.current) {
-      setLoadingPrintScreen(true);
+      setLoadingButtonPrintScreen(true);
       const result = await printScreen(areaRef.current);
       setMessage(result);
     }
   };
-  const handleSave = async (leagues: TLeagues, account: string | null) => {
-    setLoadingSave(true);
-    const makeApiSendObject = (leaguesData: TLeagues) => {
+  const handleSave = async (
+    leagues: TypeLeagues ,
+    account: string | null,
+    setJournal: TypeSetJournal
+  ) => {
+    setLoadingButtonSave(true);
+    const convertObjectForSendToApi = (leaguesData: TypeLeagues ) => {
       const keys = Object.keys(leaguesData);
 
       const result = Object.fromEntries(
@@ -83,11 +89,11 @@ export default function Control({ leagues, account }: { leagues: TLeagues | null
       return journal;
     };
 
-    const apiData: TApiPost = makeApiSendObject(leagues);
+    const apiData: TypeApiPost = convertObjectForSendToApi(leagues);
     apiData.journal = makeRecordInJournal(account);
     try {
-      const res = await api.saveData(apiData);
-      console.log(res);
+      await api.saveData(apiData);
+      setJournal(null);
       setMessage("Сохранено");
     } catch (err) {
       if (err instanceof Error) setMessage(err.message);
@@ -143,7 +149,7 @@ export default function Control({ leagues, account }: { leagues: TLeagues | null
             style={{ width: "126px", height: "60px", margin: "10px" }}
             color="secondary"
             onClick={handlePrintScreen}
-            loading={loadingPrintScreen}
+            loading={loadingButtonPrintScreen}
             loadingPosition="start"
             startIcon={<ScreenshotMonitorIcon />}
             variant="contained"
@@ -187,8 +193,8 @@ export default function Control({ leagues, account }: { leagues: TLeagues | null
         <Button
           style={{ width: "272px", marginLeft: "25px", marginTop: "30px", height: "60px" }}
           color="secondary"
-          onClick={() => handleSave(leagues, account)}
-          loading={loadingSave}
+          onClick={() => handleSave(leagues, account, setJournal)}
+          loading={loadingButtonSave}
           loadingPosition="start"
           startIcon={<SaveIcon />}
           variant="contained"

@@ -1,14 +1,12 @@
-import type { ILeague } from "../types";
+import type { TypeLeague } from "../types/types";
 
 export const colorScore = (text: string | null | undefined) => {
   if (!text) return;
   return Number(text[0]) > Number(text[2]) ? { color: "red" } : { color: "blue" };
 };
-
-export function makeArrayNumbersOfGames(league: ILeague) {
+export function makeArrayNumbersOfGames(league: TypeLeague) {
   return Array.from({ length: league.teamsCount }, (_, i) => i + 1); // [1,2,3,4,5,6,7,8]
 }
-
 export function calcColumnsWidth(countGame: number[]) {
   const widths: Record<number, number> = {
     4: 89,
@@ -36,7 +34,6 @@ export function calcColumnsWidth(countGame: number[]) {
     .map((size) => `${size}px`)
     .join(" ");
 }
-
 export function calcRowsHeight(countGame: number[]) {
   const heights: Record<number, number> = {
     4: 90,

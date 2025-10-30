@@ -1,12 +1,14 @@
 import React from "react";
-import type { ILeague } from "../types";
+import type { TypeLeague } from "../types/types";
+import type { TypeSetLeague } from "../types/states";
+
 
 export const League = React.createContext<{
-  league: ILeague;
-  setLeague: React.Dispatch<React.SetStateAction<ILeague | null>>;
+  league: TypeLeague;
+  setLeague: TypeSetLeague;
 }>(
   {} as {
-    league: ILeague;
-    setLeague: React.Dispatch<React.SetStateAction<ILeague | null>>;
+    league: TypeLeague;
+    setLeague: TypeSetLeague;
   }
 );

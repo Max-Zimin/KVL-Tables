@@ -1,6 +1,6 @@
-import type { TPlacesSet } from "../types";
+import type { TypePlacesSet } from "../types/types";
 
-const places: TPlacesSet = new Set([
+const places: TypePlacesSet = new Set([
   "I",
   "II",
   "III",

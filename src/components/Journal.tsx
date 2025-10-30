@@ -1,13 +1,13 @@
 import { Accordion, AccordionDetails, AccordionSummary, Skeleton, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import styled from "@emotion/styled";
-import type { TApiGetJournal } from "../types";
+import type { TypeApiGetJournal } from "../types/types";
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 155px 80px 40px;
 `;
-export default function Journal({ journal }: { journal: TApiGetJournal | null }) {
+export default function Journal({ journal }: { journal: TypeApiGetJournal | null }) {
   if (!journal) return <Skeleton variant="rectangular" width={300} height={200} sx={{ backgroundColor: "#4d4d4d", marginLeft: "15px" }} />;
 
   return (

@@ -37,15 +37,13 @@ export const savePrintScreen = async (element: HTMLElement): Promise<string> => 
           text: "Скриншот элемента",
           files: [file],
         });
-        return "Изображение поделено/сохранено";
+        return "Изображение сохранено";
       } catch (shareError) {
-        console.error("Ошибка при делении:", shareError);
-        // Fallback: если share не сработал, используем download
+        console.error("Ошибка при сохранении:", shareError);
         fallbackDownload(blob);
-        return "Изображение сохранено (через download)";
+        return "Изображение сохранено";
       }
     } else {
-      // Для ПК или если share не поддерживается, используем download
       fallbackDownload(blob);
       return "Изображение сохранено";
     }

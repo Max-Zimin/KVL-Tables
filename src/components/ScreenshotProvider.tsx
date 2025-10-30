@@ -1,10 +1,9 @@
-import React, { createContext, useRef, type ReactNode, type RefObject } from 'react';
+import React, { createContext, useRef, type ReactNode} from 'react';
+import type { TypeScreenshotContext } from '../types/types';
 
-interface ScreenshotContextType {
-  areaRef: RefObject<HTMLDivElement | null>;
-}
 
-const ScreenshotContext = createContext<ScreenshotContextType | null>(null);
+
+const ScreenshotContext = createContext<TypeScreenshotContext | null>(null);
 
 export const ScreenshotProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const areaRef = useRef<HTMLDivElement | null>(null);

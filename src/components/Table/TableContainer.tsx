@@ -8,13 +8,14 @@ import { Table } from "./Table/Table";
 import { CellHeader } from "./Header/CellHeader";
 import { RowHeader } from "./Header/RowHeader";
 import { Button, Tooltip, Zoom } from "@mui/material";
+import type { ITableProps } from "../../types/props";
+import type { TypeHoveredCellState, TypePlaceState, TypeScoreState } from "../../types/states";
 
-import type { IHoveredCellState, ITableProps, TPlaceState, TScoreState } from "../../types";
 
 export default function TableContainer({ league }: ITableProps) {
-  const [hoveredCell, setHoveredCell] = useState<IHoveredCellState | null>(null);
-  const [score, setScore] = useState<TScoreState>({ row: null, col: null });
-  const [place, setPlace] = useState<TPlaceState>({ row: null });
+  const [hoveredCell, setHoveredCell] = useState<TypeHoveredCellState | null>(null);
+  const [score, setScore] = useState<TypeScoreState>({ row: null, col: null });
+  const [place, setPlace] = useState<TypePlaceState>({ row: null });
   const deleteScoreAndPlace = () => {
     setScore({ row: null, col: null });
     setPlace({ row: null });

@@ -1,7 +1,7 @@
-import type { TRowNamesSet, TColsNamesSet } from "../types";
+import type { TypeRowNamesSet, TypeColsNamesSet } from "../types/types";
 
 
-const rowsNamesSet: TRowNamesSet = new Set([
+const rowsNamesSet: TypeRowNamesSet = new Set([
   "rowOne",
   "rowTwo",
   "rowThree",
@@ -19,7 +19,7 @@ const rowsNamesSet: TRowNamesSet = new Set([
   "rowTwelve",
 ]);
 
-const colsNameSet: TColsNamesSet = new Set([
+const colsNameSet: TypeColsNamesSet = new Set([
   "gameOne",
   "gameTwo",
   "gameThree",

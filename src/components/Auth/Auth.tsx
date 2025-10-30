@@ -7,19 +7,9 @@ import { ModalAuth } from "./Modal";
 import { OverlayAuth } from "./Overlay";
 import Button from "@mui/material/Button";
 import { FormControlLabel, TextField } from "@mui/material";
+import type { IAuthProps } from "../../types/props";
 
-interface AuthProps {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setAccount: React.Dispatch<React.SetStateAction<string | null>>;
-  onSubmit: (
-    login: string,
-    password: string,
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    setAccount: React.Dispatch<React.SetStateAction<string | null>>
-  ) => Promise<void>;
-}
-
-const AuthModal: React.FC<AuthProps> = ({ setIsOpen, onSubmit, setAccount }) => {
+const AuthModal: React.FC<IAuthProps> = ({ setIsOpen, onSubmit, setAccount }) => {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);

@@ -5,11 +5,11 @@ import TableContainer from "./components/Table/TableContainer";
 import Sidebar from "./components/Sidebar";
 
 import { useEffect, useRef, useState } from "react";
-import { getDataFromApi, getJournalFromApi } from "./Api/getDataFromApi";
 import { css } from "@emotion/react";
+
+import { getDataFromApi, getJournalFromApi } from "./Api/getDataFromApi";
 import { ScreenshotProvider } from "./components/ScreenshotProvider";
 
-import type { ILeague, TApiGetJournal, TLeagues } from "./types";
 import { Header } from "./components/Header/Header";
 import { League } from "./data/LeagueContext";
 import AuthModal from "./components/Auth/Auth";
@@ -18,6 +18,8 @@ import { autoLogin, handleLogin } from "./Api/apiFirebase";
 import { Skeleton } from "@mui/material";
 import Journal from "./components/Journal";
 import styled from "@emotion/styled";
+
+import type { TypeApiGetJournal, TypeLeague, TypeLeagues } from "./types/types";
 
 const AppWrapperCSS = css`
   display: flex;
@@ -61,19 +63,19 @@ const Back = styled.div`
 `;
 
 function App() {
-  const leaguesRef = useRef<TLeagues | null>(null);
+  const leaguesRef = useRef<TypeLeagues | null>(null);
   const [leaguesLoaded, setLeaguesLoaded] = useState<boolean>(false);
   const [isAuthOpen, setIsAuthOpen] = useState(true);
   const [account, setAccount] = useState<string | null>(null);
-  const [league, setLeague] = useState<ILeague | null>(null);
+  const [league, setLeague] = useState<TypeLeague | null>(null);
   const [currentLeague, setCurrentLeague] = useState<string>("Высшая М");
-  const [journal, setJournal] = useState<TApiGetJournal | null>(null);
+  const [journal, setJournal] = useState<TypeApiGetJournal | null>(null);
 
   useEffect(() => {
     autoLogin(setIsAuthOpen, setAccount);
     const storedLeagues = sessionStorage.getItem("leagues");
     if (storedLeagues) {
-      leaguesRef.current = JSON.parse(storedLeagues) as TLeagues;
+      leaguesRef.current = JSON.parse(storedLeagues) as TypeLeagues;
       setLeaguesLoaded(true);
     } else {
       getDataFromApi().then((data) => {
@@ -85,6 +87,7 @@ function App() {
       setJournal(journal);
     });
   }, []);
+
   useEffect(() => {
     const leagues = leaguesRef.current;
     if (leagues) {
@@ -98,6 +101,12 @@ function App() {
       sessionStorage.setItem("leagues", JSON.stringify(leaguesRef.current));
     }
   }, [league]);
+
+  useEffect(() => {
+    getJournalFromApi().then((journal) => {
+      setJournal(journal);
+    });
+  }, [journal]);
 
   return (
     <>
@@ -125,7 +134,7 @@ function App() {
               )}
               <div css={ControlsWrapper}>
                 <Journal journal={journal}></Journal>
-                <Control leagues={leaguesRef.current} account={account} />
+                <Control leagues={leaguesRef.current} account={account} setJournal={setJournal} />
               </div>
             </Back>
           </div>

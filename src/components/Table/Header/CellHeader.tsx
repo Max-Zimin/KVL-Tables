@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import type { CellHeaderProps } from "../../../types";
+import type { ICellHeaderProps } from "../../../types/props";
 
-export const CellHeader = styled.div<CellHeaderProps>`
+
+export const CellHeader = styled.div<ICellHeaderProps>`
   border: 1px solid #000;
   height: 100%;
   display: flex;

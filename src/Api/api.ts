@@ -1,13 +1,14 @@
-import type { TApiGetData, TApiGetJournal, TApiPost } from "../types";
+import type { TypeApiGetData, TypeApiGetJournal, TypeApiPost } from "../types/types";
+
 
 export const api = {
-  getData: async (type: "data" | "journal" = "data"): Promise<TApiGetData | TApiGetJournal> => {
+  getData: async (type: "data" | "journal" = "data"): Promise<TypeApiGetData | TypeApiGetJournal> => {
     try {
       const res = await fetch(`/api?type=${type}`);
       if (!res.ok) {
         throw new Error(`Ошибка HTTP: ${res.status}`);
       }
-      const data: TApiGetData | TApiGetJournal = await res.json();
+      const data: TypeApiGetData | TypeApiGetJournal = await res.json();
       return data;
     } catch (err) {
       console.error("Ошибка fetch:", err);
@@ -15,7 +16,7 @@ export const api = {
     }
   },
 
-  saveData: async (newItem: TApiPost ): Promise<string> => {
+  saveData: async (newItem: TypeApiPost ): Promise<string> => {
     try {
       const res = await fetch("/api", {
         method: "POST",

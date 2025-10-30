@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import type { TTableDivProps } from "../../../types";
+import type { ITableDivProps } from "../../../types/props";
 
-export const Table = styled.div<TTableDivProps>`
+
+export const Table = styled.div<ITableDivProps>`
   display: grid;
   grid-template-columns: ${(props) => props.columns};
   grid-template-rows: ${(props) => props.rows};
