@@ -45,12 +45,14 @@ const Account = ({ name, setIsOpen, setAccount }: IAccountProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   if (!name) return null;
 
-  const firstLetter = name.charAt(0).toUpperCase(); // Первая буква в верхнем регистре
+  const firstLetter = name.charAt(0).toUpperCase();
 
   return (
     <Avatar isHovered={isHovered} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-      <Letter isHovered={isHovered}>{firstLetter}</Letter>
-      <FullName isHovered={isHovered}>
+      <Letter isHovered={isHovered} onClick={() => setIsHovered(true)}>
+        {firstLetter}
+      </Letter>
+      <FullName isHovered={isHovered} onClick={() => setIsHovered(false)}>
         {name}
         <Button
           onClick={() => logout(setIsOpen, setAccount)}
