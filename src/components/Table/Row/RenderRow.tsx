@@ -4,7 +4,7 @@ import Place from "../Setters/Place";
 import { Cell } from "./Cell";
 import { Row } from "./Row";
 import { colorScore } from "../../../data/stylesFunctions";
-import { useContext, useRef } from "react";
+import { useCallback, useContext, useRef } from "react";
 import { League } from "../../../data/LeagueContext";
 
 import { winLos, points, gameRatio } from "./CalcFunctions";
@@ -26,50 +26,54 @@ export default function RenderRow({
   const clickTimeoutScore = useRef<NodeJS.Timeout | number | null>(null);
   const clickTimeoutPlace = useRef<NodeJS.Timeout | number | null>(null);
 
-  const handleLongPress = (
-    rowIndex: number,
-    gameIndex: number,
-    gameName: TypeColsNames,
-    e: React.TouchEvent<Element>
-  ) => {
-    if (navigator.vibrate) navigator.vibrate(100); // Вибрация 100 мс
-    handleClickScore(rowIndex, gameIndex, gameName, e);
-  };
+  const handleClickScore = useCallback(
+    (rowIndex: number, gameIndex: number, gameName: TypeColsNames, e: React.MouseEvent | React.TouchEvent<Element>) => {
+      const setResult = (rowIndex: number, gameIndex: number) => {
+        setScore({ row: rowIndex, col: gameIndex });
+        setPlace({ row: null });
+      };
+      const clearResult = (rowIndex: number, gameIndex: number, gameName: TypeColsNames) => {
+        league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = "";
+        league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] = "";
+        setLeague({ ...league });
+        setScore({ row: null, col: null });
+        setPlace({ row: null });
+      };
+      if (clickTimeoutScore.current) {
+        clearTimeout(clickTimeoutScore.current);
+        clickTimeoutScore.current = null;
+        clearResult(rowIndex, gameIndex, gameName);
+      } else {
+        clickTimeoutScore.current = setTimeout(() => {
+          setResult(rowIndex, gameIndex);
+          clickTimeoutScore.current = null;
+        }, 300);
+      }
+      e.stopPropagation();
+    },
+    [league, setLeague, setPlace, setScore]
+  );
+  const handleLongPress = useCallback(
+    (rowIndex: number, gameIndex: number, gameName: TypeColsNames, e: React.TouchEvent<Element>) => {
+      const clearResult = (rowIndex: number, gameIndex: number, gameName: TypeColsNames) => {
+        league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = "";
+        league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] = "";
+        setLeague({ ...league });
+        setScore({ row: null, col: null });
+        setPlace({ row: null });
+      };
+      if (navigator.vibrate) navigator.vibrate(100);
+      clearResult(rowIndex, gameIndex, gameName);
+      setScore({ row: null, col: null });
+      setPlace({ row: null });
+      e.stopPropagation();
+    },
+    [setPlace, setScore, league, setLeague]
+  );
   const { handleTouchStart, handleTouchEnd, handleTouchMove } = useLongPress({
     onLongPress: handleLongPress,
     delay: 500,
-    isMobileOnly: true,
   });
-
-  const handleClickScore = (
-    rowIndex: number,
-    gameIndex: number,
-    gameName: TypeColsNames,
-    e: React.MouseEvent | React.TouchEvent<Element>
-  ) => {
-    const setResult = (rowIndex: number, gameIndex: number) => {
-      setScore({ row: rowIndex, col: gameIndex });
-      setPlace({ row: null });
-    };
-    const clearResult = (rowIndex: number, gameIndex: number, gameName: TypeColsNames) => {
-      league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = "";
-      league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] = "";
-      setLeague({ ...league });
-      setScore({ row: null, col: null });
-      setPlace({ row: null });
-    };
-    if (clickTimeoutScore.current) {
-      clearTimeout(clickTimeoutScore.current);
-      clickTimeoutScore.current = null;
-      clearResult(rowIndex, gameIndex, gameName);
-    } else {
-      clickTimeoutScore.current = setTimeout(() => {
-        setResult(rowIndex, gameIndex);
-        clickTimeoutScore.current = null;
-      }, 300);
-    }
-    e.stopPropagation();
-  };
   const handleClickPlace = (rowIndex: number, e: React.MouseEvent) => {
     const setResult = (rowIndex: number) => {
       setPlace({ row: rowIndex });

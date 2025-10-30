@@ -12,24 +12,27 @@ export const useScreenshot = () => {
   return context;
 };
 
-export const useLongPress = ({ onLongPress, delay = 500, isMobileOnly = false }: IUseLongPressOptions) => {
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
+export const useLongPress = ({ onLongPress, delay = 500 }: IUseLongPressOptions) => {
+  const hasTouch = "ontouchstart" in window;
 
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const handleTouchStart = useCallback(
     (rowIndex: number, gameIndex: number, gameName: TypeColsNames, e: React.TouchEvent<Element>) => {
-      if (!isMobileOnly || window.matchMedia("(max-width: 768px)").matches) {
+      if (hasTouch) {
+        console.log("Touch start — запускаем таймер для long press");
         timerRef.current = setTimeout(() => onLongPress(rowIndex, gameIndex, gameName, e), delay);
       }
     },
-    [onLongPress, delay, isMobileOnly]
+    [onLongPress, delay, hasTouch]
   );
 
   const handleTouchEnd = useCallback(() => {
-    if (timerRef.current !== null) {
+    if (hasTouch && timerRef.current !== null) {
+      console.log("Touch end — отменяем таймер");
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-  }, []);
+  }, [hasTouch]);
 
   const handleTouchMove = useCallback(() => {
     handleTouchEnd();
