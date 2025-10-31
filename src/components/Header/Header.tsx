@@ -55,8 +55,8 @@ export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
   return (
     <div css={HeadCSS}>
       <img css={CSSlogo} src="KVL_logo.png" alt="" />
-      {isLoaded && <img css={CSScover} alt="" src="KVLoblozhka.png" onLoad={onLoadedImage}></img>}
-      {!isLoaded && <img css={CSScover} alt="" src="KVLoblozhkaLite.png"></img>}
+      {isLoaded && <img css={CSScover} style={{border: 'solid red 10px'}} alt="" src="KVLoblozhka.png" onLoad={onLoadedImage}></img>}
+      {!isLoaded && <img css={CSScover} style={{border: 'solid green 10px'}} alt="" src="KVLoblozhkaLite.png"></img>}
 
       {account ? (
         <Account name={account} setIsOpen={setIsOpen} setAccount={setAccount}></Account>
