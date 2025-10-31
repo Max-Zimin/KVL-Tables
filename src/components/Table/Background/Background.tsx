@@ -62,7 +62,7 @@ export default function Background({
           variant="rectangular"
           width={960}
           height={540}
-          sx={{ backgroundColor: "#4d4d4d" }}
+          sx={{ backgroundColor: "rgb(106, 106, 106)" }}
         />
       )}
       <img
