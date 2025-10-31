@@ -44,7 +44,12 @@ export const BackgroundCSS = styled.div`
   width: 960px;
   height: 540px;
 `;
-export default function Background({ league, children, onClick, setHoveredCell }: IBackgroundProps) {
+export default function Background({
+  league,
+  children,
+  onClick,
+  setHoveredCell,
+}: IBackgroundProps) {
   const { areaRef } = useScreenshot();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const onLoadedImage = () => {
@@ -55,8 +60,9 @@ export default function Background({ league, children, onClick, setHoveredCell }
       {!isLoaded && (
         <Skeleton
           variant="rectangular"
-          width={960} 
+          width={960}
           height={540}
+          sx={{ backgroundColor: "#4d4d4d" }}
         />
       )}
       <img

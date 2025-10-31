@@ -8,7 +8,7 @@ const Grid = styled.div`
   grid-template-columns: 155px 80px 40px;
 `;
 export default function Journal({ journal }: { journal: TypeApiGetJournal | null }) {
-  if (!journal) return <Skeleton variant="rectangular" width={300} height={200} sx={{ backgroundColor: "#4d4d4d", marginLeft: "15px" }} />;
+  if (!journal) return <Skeleton variant="rectangular" width={300} height={200} sx={{ backgroundColor: "#4d4d4d", marginLeft: "5px" }} />;
 
   return (
     <Accordion defaultExpanded style={{ backgroundColor: "#3c3c3c", border: "1px solid grey", color: "#b4b4b4" }}>

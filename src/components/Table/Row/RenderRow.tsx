@@ -27,14 +27,20 @@ export default function RenderRow({
   const clickTimeoutPlace = useRef<NodeJS.Timeout | number | null>(null);
 
   const handleClickScore = useCallback(
-    (rowIndex: number, gameIndex: number, gameName: TypeColsNames, e: React.MouseEvent | React.TouchEvent<Element>) => {
+    (
+      rowIndex: number,
+      gameIndex: number,
+      gameName: TypeColsNames,
+      e: React.MouseEvent | React.TouchEvent<Element>
+    ) => {
       const setResult = (rowIndex: number, gameIndex: number) => {
         setScore({ row: rowIndex, col: gameIndex });
         setPlace({ row: null });
       };
       const clearResult = (rowIndex: number, gameIndex: number, gameName: TypeColsNames) => {
         league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = "";
-        league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] = "";
+        league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] =
+          "";
         setLeague({ ...league });
         setScore({ row: null, col: null });
         setPlace({ row: null });
@@ -54,10 +60,16 @@ export default function RenderRow({
     [league, setLeague, setPlace, setScore]
   );
   const handleLongPress = useCallback(
-    (rowIndex: number, gameIndex: number, gameName: TypeColsNames, e: React.TouchEvent<Element>) => {
+    (
+      rowIndex: number,
+      gameIndex: number,
+      gameName: TypeColsNames,
+      e: React.TouchEvent<Element>
+    ) => {
       const clearResult = (rowIndex: number, gameIndex: number, gameName: TypeColsNames) => {
         league.data.filter((team) => team.count === rowIndex + 1)[0][gameName] = "";
-        league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] = "";
+        league.data.filter((team) => team.count === gameIndex + 1)[0][league.colsNames[rowIndex]] =
+          "";
         setLeague({ ...league });
         setScore({ row: null, col: null });
         setPlace({ row: null });
@@ -110,7 +122,11 @@ export default function RenderRow({
       </Cell>
       <Cell
         key={row.teamName}
-        isHover={hoveredCell?.rowIndex === rowIndex || hoveredCell?.colIndex === rowIndex + 1 ? true : false}
+        isHover={
+          hoveredCell?.rowIndex === rowIndex || hoveredCell?.colIndex === rowIndex + 1
+            ? true
+            : false
+        }
         colIndex={1}
         rowIndex={rowIndex}
         colors={league.colors}
@@ -140,8 +156,12 @@ export default function RenderRow({
             key={gameName}
             onMouseEnter={() => setHoveredCell({ rowIndex: rowIndex, colIndex: gameIndex + 1 })}
             onMouseLeave={() => setHoveredCell(null)}
-            onClick={(event: React.MouseEvent) => handleClickScore(rowIndex, gameIndex, gameName, event)}
-            onTouchStart={(event: React.TouchEvent<Element>) => handleTouchStart(rowIndex, gameIndex, gameName, event)}
+            onClick={(event: React.MouseEvent) =>
+              handleClickScore(rowIndex, gameIndex, gameName, event)
+            }
+            onTouchStart={(event: React.TouchEvent<Element>) =>
+              handleTouchStart(rowIndex, gameIndex, gameName, event)
+            }
             onTouchEnd={handleTouchEnd}
             onTouchMove={handleTouchMove}
             style={{ userSelect: "none" }}
@@ -152,7 +172,12 @@ export default function RenderRow({
           >
             <p style={colorScore(row[gameName])}> {row[gameName]}</p>
             {rowIndex === score.row && gameIndex === score.col && (
-              <Score rowIndex={rowIndex} colIndex={gameIndex} gameName={gameName} setScore={setScore} />
+              <Score
+                rowIndex={rowIndex}
+                colIndex={gameIndex}
+                gameName={gameName}
+                setScore={setScore}
+              />
             )}
           </Cell>
         );
