@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 import Account from "./Account";
 import { Skeleton, Tooltip } from "@mui/material";
 import type { IHeaderProps } from "../../types/props";
+import { useState } from "react";
 
 const HeadCSS = css`
   width: 100%;
@@ -47,10 +48,16 @@ const CSSskeleton = css`
 `;
 
 export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const onLoadedImage = () => {
+    setIsLoaded(true);
+  };
   return (
     <div css={HeadCSS}>
       <img css={CSSlogo} src="KVL_logo.png" alt="" />
-      <img css={CSScover} alt="" src="KVLoblozhka.png"></img>
+      {isLoaded && <img css={CSScover} alt="" src="KVLoblozhka.png" onLoad={onLoadedImage}></img>}
+      {!isLoaded && <img css={CSScover} alt="" src="KVLoblozhkaLite.png"></img>}
+
       {account ? (
         <Account name={account} setIsOpen={setIsOpen} setAccount={setAccount}></Account>
       ) : (
