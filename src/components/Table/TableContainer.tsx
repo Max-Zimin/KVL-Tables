@@ -11,7 +11,6 @@ import { Button, Tooltip, Zoom } from "@mui/material";
 import type { ITableProps } from "../../types/props";
 import type { TypeHoveredCellState, TypePlaceState, TypeScoreState } from "../../types/states";
 
-
 export default function TableContainer({ league }: ITableProps) {
   const [hoveredCell, setHoveredCell] = useState<TypeHoveredCellState | null>(null);
   const [score, setScore] = useState<TypeScoreState>({ row: null, col: null });
@@ -60,7 +59,7 @@ export default function TableContainer({ league }: ITableProps) {
               </CellHeader>
             ))}
             <CellHeader colors={league.colors} extraColor={true}>
-             П/п
+              П/п
             </CellHeader>
             <CellHeader colors={league.colors}>Очки</CellHeader>
             <CellHeader colors={league.colors}>Партии</CellHeader>
@@ -85,6 +84,8 @@ export default function TableContainer({ league }: ITableProps) {
       </Background>
       <div style={{ display: "flex", width: "100%" }}>
         <Tooltip
+          enterTouchDelay={200}
+          leaveTouchDelay={6000}
           title={
             <p
               style={{

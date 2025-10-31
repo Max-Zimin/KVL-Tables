@@ -12,7 +12,7 @@ import { useScreenshot } from "../hooks";
 import { useState } from "react";
 import { api } from "../Api/api";
 
-import type {TypeApiPost, TypeLeagues } from "../types/types";
+import type { TypeApiPost, TypeLeagues } from "../types/types";
 import { Skeleton, Tooltip } from "@mui/material";
 import { savePrintScreen } from "../savePrintScreen";
 import type { IControlProps } from "../types/props";
@@ -47,13 +47,9 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
       setMessage(result);
     }
   };
-  const handleSave = async (
-    leagues: TypeLeagues ,
-    account: string | null,
-    setJournal: TypeSetJournal
-  ) => {
+  const handleSave = async (leagues: TypeLeagues, account: string | null, setJournal: TypeSetJournal) => {
     setLoadingButtonSave(true);
-    const convertObjectForSendToApi = (leaguesData: TypeLeagues ) => {
+    const convertObjectForSendToApi = (leaguesData: TypeLeagues) => {
       const keys = Object.keys(leaguesData);
 
       const result = Object.fromEntries(
@@ -112,6 +108,8 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
       <div style={{ display: "flex", width: "100%" }}>
         <Tooltip
           sx={{ marginLeft: "auto", fontSize: "16px" }}
+          enterTouchDelay={200}
+          leaveTouchDelay={6000}
           title={
             <p
               style={{
@@ -142,7 +140,7 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
         </Tooltip>
       </div>
 
-      <fieldset style={{ borderColor: "grey", marginTop: "30px" }}>
+      <fieldset style={{ borderColor: "grey", marginTop: "30px", width: "292px" }}>
         <legend style={{ color: "#b4b4b4" }}>Получить изображение</legend>
         {leagues ? (
           <Button

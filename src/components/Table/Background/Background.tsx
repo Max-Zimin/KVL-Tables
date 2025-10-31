@@ -4,11 +4,12 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useScreenshot } from "../../../hooks";
 import type { IBackgroundProps } from "../../../types/props";
-
+import { useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
 
 const src: Record<string, string> = {
-  'Восход ЖЖ': "/SunriseM.png",
-  'Восход МЖ': "/SunriseW.png",
+  "Восход ЖЖ": "/SunriseM.png",
+  "Восход МЖ": "/SunriseW.png",
   "Высшая М": "/MajorM.png",
   "Высшая Ж": "/MajorW.png",
   "Восход М": "/SunriseM.png",
@@ -45,9 +46,28 @@ export const BackgroundCSS = styled.div`
 `;
 export default function Background({ league, children, onClick, setHoveredCell }: IBackgroundProps) {
   const { areaRef } = useScreenshot();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const onLoadedImage = () => {
+    setIsLoaded(true);
+  };
   return (
     <BackgroundCSS onClick={onClick} ref={areaRef} onMouseEnter={() => setHoveredCell(null)}>
-      <img css={image} alt="..." src={getBackgroundUrl(league.label)}></img>
+      {!isLoaded && (
+        <Skeleton
+          variant="rectangular"
+          width={960} 
+          height={540}
+        />
+      )}
+      <img
+        css={image}
+        alt="..."
+        src={getBackgroundUrl(league.label)}
+        onLoad={onLoadedImage}
+        style={{
+          display: isLoaded ? "block" : "none",
+        }}
+      ></img>
       <div css={childrenWrapper}>{children}</div>
     </BackgroundCSS>
   );
