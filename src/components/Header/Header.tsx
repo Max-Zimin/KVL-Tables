@@ -49,14 +49,28 @@ const CSSskeleton = css`
 
 export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  console.log("🚀 ~ Header ~ isLoaded:", isLoaded);
   const onLoadedImage = () => {
     setIsLoaded(true);
   };
   return (
     <div css={HeadCSS}>
       <img css={CSSlogo} src="KVL_logo.png" alt="" />
-      {isLoaded && <img css={CSScover} style={{border: 'solid red 10px'}} alt="" src="KVLoblozhka.png" onLoad={onLoadedImage}></img>}
-      {!isLoaded && <img css={CSScover} style={{border: 'solid green 10px'}} alt="" src="KVLoblozhkaLite.png"></img>}
+      <img
+        css={CSScover}
+        style={{ border: "solid red 10px", display: isLoaded ? "block" : "none" }}
+        alt="Header"
+        src="KVLoblozhka.png"
+        onLoad={onLoadedImage}
+      ></img>
+      {!isLoaded && (
+        <img
+          css={CSScover}
+          style={{ border: "solid green 10px" }}
+          alt="Placeholder Header"
+          src="KVLoblozhkaLite.png"
+        ></img>
+      )}
 
       {account ? (
         <Account name={account} setIsOpen={setIsOpen} setAccount={setAccount}></Account>
