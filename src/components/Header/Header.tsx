@@ -58,7 +58,7 @@ export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
       <img css={CSSlogo} src="KVL_logo.png" alt="" />
       <img
         css={CSScover}
-        style={{ border: "solid red 10px", display: isLoaded ? "block" : "none" }}
+        style={{ display: isLoaded ? "block" : "none" }}
         alt="Header"
         src="KVLoblozhka.png"
         onLoad={onLoadedImage}
@@ -66,7 +66,6 @@ export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
       {!isLoaded && (
         <img
           css={CSScover}
-          style={{ border: "solid green 10px" }}
           alt="Placeholder Header"
           src="KVLoblozhkaLite.png"
         ></img>
