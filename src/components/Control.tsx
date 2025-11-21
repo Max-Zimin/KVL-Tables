@@ -20,7 +20,7 @@ import type { TypeSetJournal } from "../types/states";
 
 const Controls = styled.div``;
 
-export default function Control({ leagues, account, setJournal }: IControlProps) {
+export default function Control({ leagues, account, setJournal, currentLeague }: IControlProps) {
   const [loadingButtonSave, setLoadingButtonSave] = useState(false);
   const [loadingButtonPrintScreen, setLoadingButtonPrintScreen] = useState(false);
   const [loadingSavePrintScreen, setLoadingButtonSavePrintScreen] = useState(false);
@@ -33,10 +33,10 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
     setLoadingButtonPrintScreen(false);
     setLoadingButtonSavePrintScreen(false);
   };
-  const handleSavePrintScreen = async () => {
+  const handleSavePrintScreen = async (currentLeague: string) => {
     if (areaRef.current) {
       setLoadingButtonSavePrintScreen(true);
-      const result = await savePrintScreen(areaRef.current);
+      const result = await savePrintScreen(areaRef.current, currentLeague);
       setMessage(result);
     }
   };
@@ -47,7 +47,11 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
       setMessage(result);
     }
   };
-  const handleSave = async (leagues: TypeLeagues, account: string | null, setJournal: TypeSetJournal) => {
+  const handleSave = async (
+    leagues: TypeLeagues,
+    account: string | null,
+    setJournal: TypeSetJournal
+  ) => {
     setLoadingButtonSave(true);
     const convertObjectForSendToApi = (leaguesData: TypeLeagues) => {
       const keys = Object.keys(leaguesData);
@@ -64,13 +68,13 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
         const today = new Date();
         const day = String(today.getDate()).padStart(2, "0");
         const month = String(today.getMonth() + 1).padStart(2, "0");
-        const year = today.getFullYear(); // Год
+        const year = today.getFullYear();
         return `${day}.${month}.${year}`;
       }
       function getCurrentTimeString(): string {
         const now = new Date();
-        const hours = String(now.getHours()).padStart(2, "0"); // Часы с ведущим нулем
-        const minutes = String(now.getMinutes()).padStart(2, "0"); // Минуты с ведущим нулем
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
         return `${hours}:${minutes}`;
       }
 
@@ -96,16 +100,70 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
       throw err;
     }
   };
-  const helperText = `Чтобы создать скриншот в буфер обмена, нажмите "СОЗДАТЬ СКРИНШОТ".
+  const helperTextSave = `Чтобы создать скриншот в буфер обмена, нажмите "СОЗДАТЬ СКРИНШОТ".
 (Удобно для отправки изображений).
 
 Чтобы сохранить изображение в галерею или на компьютер нажмите "СОХРАНИТЬ КАРТИНКУ".
 (Удобно, если необходимо выложить пост из галереи).
 
 Для удобства перехода к группе КВЛ на страницу ВК есть ссылка в правом верхнем углу страницы.`;
+  const helperTextTable = `1. Выберите нужную лигу в левой части страницы.
+
+2. Чтобы добавить результат матча нажмите на ячейку нужного матча. 
+   В появившемся окне выберите верный счет. 
+   Счет в столбце второй команды проставится автоматически.
+
+3. При необходимости удалить результат из таблицы: 
+    * для ПК: необходимо сделать двойной щелчок мыши на нужной ячейке
+    * для телефона необходимо сделать длительное нажатие на нужной ячейке.
+Результат в столбце второй команды удалится автоматически.
+
+4. Аналогичным образом заполняется столбец "Место".
+
+5. Столбцы: "П/п", "Очки", "Партии" расчитываются автоматически.
+
+6. По завершению заполнения таблиц нажмите кнопку "СОХРАНИТЬ РЕЗУЛЬТАТЫ".
+   Нет необходимости нажимать ее после заполнения каждой таблицы,
+   достаточно нажать после заполнения всех таблиц.
+   
+7. Не закрывайте страницу до завершения сохранения.
+  `;
   return (
     <Controls>
       <div style={{ display: "flex", width: "100%" }}>
+        <Tooltip
+          enterTouchDelay={200}
+          leaveTouchDelay={6000}
+          title={
+            <p
+              style={{
+                fontSize: "18px",
+                whiteSpace: "pre-wrap",
+                lineHeight: 1.6,
+                margin: 0,
+              }}
+            >
+              {helperTextTable}
+            </p>
+          }
+          placement="right-end"
+          slots={{
+            transition: Zoom,
+          }}
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: "rgba(0, 0, 0, 0.9)",
+                maxWidth: "1000px",
+                padding: "40px",
+              },
+            },
+          }}
+        >
+          <Button>
+            <HelpOutlineIcon style={{ fontSize: "40px" }} />
+          </Button>
+        </Tooltip>
         <Tooltip
           sx={{ marginLeft: "auto", fontSize: "16px" }}
           enterTouchDelay={200}
@@ -119,7 +177,7 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
                 margin: 0,
               }}
             >
-              {helperText}
+              {helperTextSave}
             </p>
           }
           placement="left"
@@ -168,7 +226,7 @@ export default function Control({ leagues, account, setJournal }: IControlProps)
           <Button
             style={{ width: "126px", height: "60px", margin: "10px" }}
             color="secondary"
-            onClick={handleSavePrintScreen}
+            onClick={() => handleSavePrintScreen(currentLeague)}
             loading={loadingSavePrintScreen}
             loadingPosition="start"
             startIcon={<SaveAltIcon />}

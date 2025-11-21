@@ -88,8 +88,12 @@ export interface IPlaceProps {
   rowIndex: number;
   setPlace: TypeSetPlace;
 }
+export interface IStatisticsProps {
+  data: TypeTableData[] | undefined;
+}
 export interface IControlProps {
   leagues: TypeLeagues | null;
   account: string | null;
   setJournal: TypeSetJournal;
+  currentLeague: string;
 }

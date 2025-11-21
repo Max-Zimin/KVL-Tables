@@ -103,10 +103,10 @@ function App() {
   }, [league]);
 
   useEffect(() => {
-    if(!journal)
-    getJournalFromApi().then((journal) => {
-      setJournal(journal);
-    });
+    if (!journal)
+      getJournalFromApi().then((journal) => {
+        setJournal(journal);
+      });
   }, [journal]);
 
   return (
@@ -120,10 +120,19 @@ function App() {
         <div css={AppWrapperCSS}>
           <Header account={account} setIsOpen={setIsAuthOpen} setAccount={setAccount} />
           <div css={ContainerCSS}>
-            <Sidebar currentLeague={currentLeague} setCurrentLeague={setCurrentLeague} leagues={leaguesRef.current} />
+            <Sidebar
+              currentLeague={currentLeague}
+              setCurrentLeague={setCurrentLeague}
+              leagues={leaguesRef.current}
+            />
             <Back>
               {!leaguesRef.current ? (
-                <Skeleton variant="rectangular" width={960} height={540} sx={{ backgroundColor: "#4d4d4d" }} />
+                <Skeleton
+                  variant="rectangular"
+                  width={960}
+                  height={540}
+                  sx={{ backgroundColor: "#4d4d4d" }}
+                />
               ) : (
                 <>
                   {league && leaguesRef ? (
@@ -134,8 +143,13 @@ function App() {
                 </>
               )}
               <div css={ControlsWrapper}>
-                <Journal journal={journal}></Journal>
-                <Control leagues={leaguesRef.current} account={account} setJournal={setJournal} />
+                <Journal journal={journal} />
+                <Control
+                  leagues={leaguesRef.current}
+                  account={account}
+                  setJournal={setJournal}
+                  currentLeague={currentLeague}
+                />
               </div>
             </Back>
           </div>

@@ -113,6 +113,3 @@ export type TypeScreenshotContext = {
   areaRef: RefObject<HTMLDivElement | null>;
 }
 
-// export interface IChoosenLeagueProp {
-//   league: ILeague;
-// }
