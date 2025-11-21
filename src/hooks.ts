@@ -19,7 +19,6 @@ export const useLongPress = ({ onLongPress, delay = 500 }: IUseLongPressOptions)
   const handleTouchStart = useCallback(
     (rowIndex: number, gameIndex: number, gameName: TypeColsNames, e: React.TouchEvent<Element>) => {
       if (hasTouch) {
-        console.log("Touch start — запускаем таймер для long press");
         timerRef.current = setTimeout(() => onLongPress(rowIndex, gameIndex, gameName, e), delay);
       }
     },
@@ -28,7 +27,6 @@ export const useLongPress = ({ onLongPress, delay = 500 }: IUseLongPressOptions)
 
   const handleTouchEnd = useCallback(() => {
     if (hasTouch && timerRef.current !== null) {
-      console.log("Touch end — отменяем таймер");
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }

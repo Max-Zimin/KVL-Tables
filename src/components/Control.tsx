@@ -160,9 +160,7 @@ export default function Control({ leagues, account, setJournal, currentLeague }:
             },
           }}
         >
-          <Button>
-            <HelpOutlineIcon style={{ fontSize: "40px" }} />
-          </Button>
+            <Button startIcon={<HelpOutlineIcon />}><span style={{color: "black"}}>Таблицы</span></Button>
         </Tooltip>
         <Tooltip
           sx={{ marginLeft: "auto", fontSize: "16px" }}
@@ -194,11 +192,11 @@ export default function Control({ leagues, account, setJournal, currentLeague }:
             },
           }}
         >
-          <Button startIcon={<HelpOutlineIcon />}></Button>
+          <Button startIcon={<HelpOutlineIcon />}><span style={{color: "black"}}>Управление</span></Button>
         </Tooltip>
       </div>
 
-      <fieldset style={{ borderColor: "grey", marginTop: "30px", width: "292px" }}>
+      <fieldset style={{ borderColor: "grey", marginTop: "20px", width: "292px" }}>
         <legend style={{ color: "#b4b4b4" }}>Получить изображение</legend>
         {leagues ? (
           <Button

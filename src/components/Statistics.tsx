@@ -2,6 +2,7 @@
 import styled from "@emotion/styled";
 import type { IStatisticsProps } from "../types/props";
 import type { TypeTableData } from "../types/types";
+import Skeleton from "@mui/material/Skeleton";
 
 const StatisticsContainer = styled.div`
   width: 948px;
@@ -49,20 +50,27 @@ export default function Statistics({ data }: IStatisticsProps) {
   };
 
   if (!data || data.length === 0) {
-    return <div>Нет данных для отображения.</div>;
+    return (
+      <Skeleton
+        variant="rectangular"
+        width={960}
+        height={250}
+        sx={{ backgroundColor: "rgb(106, 106, 106)", marginTop: "10px", borderRadius: "5px" }}
+      />
+    );
   }
   const { totalGames, playedGames } = calculateGames(data);
 
   return (
     <StatisticsContainer>
-      <div style={{ display: "flex", justifyContent: "space-between"}}>
-        <div style={{ marginLeft: '140px' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ marginLeft: "140px" }}>
           <h2>Статистика турнира</h2>
           <h3>Общее количество игр: {totalGames}</h3>
           <h3>Сыгранных игр: {playedGames}</h3>
           <h3>Осталось сыграть: {totalGames - playedGames}</h3>
         </div>
-        <div style={{ marginLeft: "10px", marginRight: '140px' }}>
+        <div style={{ marginLeft: "10px", marginRight: "140px" }}>
           <h2>Статистика по командам</h2>
           <div>
             <ul>

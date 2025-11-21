@@ -49,7 +49,6 @@ const CSSskeleton = css`
 
 export function Header({ account, setIsOpen, setAccount }: IHeaderProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  console.log("🚀 ~ Header ~ isLoaded:", isLoaded);
   const onLoadedImage = () => {
     setIsLoaded(true);
   };
