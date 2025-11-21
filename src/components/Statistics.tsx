@@ -65,7 +65,7 @@ export default function Statistics({ data }: IStatisticsProps) {
     <StatisticsContainer>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ marginLeft: "140px" }}>
-          <h2>Статистика турнира</h2>
+          <h2>Статистика чемпионата</h2>
           <h3>Общее количество игр: {totalGames}</h3>
           <h3>Сыгранных игр: {playedGames}</h3>
           <h3>Осталось сыграть: {totalGames - playedGames}</h3>
