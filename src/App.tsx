@@ -68,7 +68,7 @@ function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(true);
   const [account, setAccount] = useState<string | null>(null);
   const [league, setLeague] = useState<TypeLeague | null>(null);
-  const [currentLeague, setCurrentLeague] = useState<string>("Высшая М");
+  const [currentLeague, setCurrentLeague] = useState<string>("Высшая МА");
   const [journal, setJournal] = useState<TypeApiGetJournal | null>(null);
 
   useEffect(() => {

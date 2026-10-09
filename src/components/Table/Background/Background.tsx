@@ -8,9 +8,8 @@ import { useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
 
 const src: Record<string, string> = {
-  "Восход ЖЖ": "/SunriseM.png",
-  "Восход МЖ": "/SunriseW.png",
-  "Высшая М": "/MajorM.png",
+  "Высшая МА": "/MajorMA.png",
+  "Высшая МБ": "/MajorMB.png",
   "Высшая Ж": "/MajorW.png",
   "Восход М": "/SunriseM.png",
   "Восход Ж": "/SunriseW.png",
